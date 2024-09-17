@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">On Point</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+<!--    <integer-array name="radius">-->
+<!--        <item> 20 </item>-->
+<!--        <item> 50 </item>-->
+<!--        <item> 100 </item>-->
+<!--        <item> 200 </item>-->
+<!--        <item> 500 </item>-->
+<!--    </integer-array>-->
+
+</resources>
