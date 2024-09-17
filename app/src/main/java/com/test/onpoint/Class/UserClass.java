@@ -1,16 +1,17 @@
 package com.test.onpoint.Class;
 
 public class UserClass {
-    private String username;
+    private String username, userPicture;
     private String email;
 
     public UserClass() {
 
     }
 
-    public UserClass(String username, String email) {
+    public UserClass(String username, String email, String userPicture) {
         this.username = username;
         this.email = email;
+        this.userPicture = userPicture;
     }
 
     public String getUsername() {
@@ -20,4 +21,8 @@ public class UserClass {
     public String getEmail() {
         return email;
     }
+    public String getUserPicture() {
+        return userPicture;
+    }
+
 }

@@ -61,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
         final String username = etNama.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
+        String userPicture = "https://firebasestorage.googleapis.com/v0/b/check-point-a7308.appspot.com/o/User%20Profile%20Picture%2FDefaultPicture.jpg?alt=media&token=7a82525e-aa9a-484d-ac51-0443b404ac20";
 
         if (username.isEmpty()) {
             etNama.setError("Username is required");
@@ -95,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             FirebaseUser user = auth.getCurrentUser();
-                            saveUserData(user.getUid(), username, user.getEmail());
+                            saveUserData(user.getUid(), username, user.getEmail(), userPicture);
 
                             showSuccessDialog();
                         } else {
@@ -134,8 +135,8 @@ public class RegisterActivity extends AppCompatActivity {
         userDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
-    private void saveUserData(String userId, String username, String email) {
-        UserClass userData = new UserClass(username, email);
+    private void saveUserData(String userId, String username, String email, String userPicture) {
+        UserClass userData = new UserClass(username, email, userPicture);
         userDatabase.child("Users").child(userId).setValue(userData);
     }
 }

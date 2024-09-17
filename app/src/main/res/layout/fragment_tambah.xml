@@ -3,49 +3,189 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.FragmentTambah">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints"
-            android:hint="Lokasi"/>
+       <androidx.cardview.widget.CardView
+           android:id="@+id/cardTambah"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="20dp"
+           android:layout_marginEnd="20dp"
+           android:elevation="30dp"
+           app:cardCornerRadius="10dp"
+           android:layout_centerInParent="true">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Longitude"/>
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Latitude"/>
+               <com.google.android.material.textfield.TextInputLayout
+                   android:id="@+id/layoutLokasi"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                   android:hint="Lokasi Check Point"
+                   app:hintTextColor="@color/hintTextColor"
+                   android:layout_marginStart="17dp"
+                   android:layout_marginEnd="17dp"
+                   app:endIconMode="clear_text"
+                   app:counterEnabled="false"
+                   app:boxStrokeColor="@color/strokeColor"
+                   android:layout_marginTop="20dp">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="QR Code"/>
+                   <com.google.android.material.textfield.TextInputEditText
+                       android:id="@+id/etLokasi"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_qr_code_scanner_24"/>
+               </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <Spinner-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:entries="@array/radius"/>-->
+               <TextView
+                   android:id="@+id/tvKoordinat"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Koordinat"
+                   android:layout_marginStart="17dp"
+                   android:layout_marginEnd="17dp"
+                   android:layout_marginTop="30dp"
+                   android:layout_marginBottom="6dp"
+                   android:textStyle="bold"
+                   />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ADD"/>
+               <RelativeLayout
+                   android:id="@+id/layoutKordinat"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="17dp"
+                   android:layout_marginEnd="17dp">
 
-    </LinearLayout>
+                   <ImageButton
+                       android:id="@+id/btnLokasi"
+                       android:layout_width="70dp"
+                       android:layout_height="wrap_content"
+                       android:src="@drawable/baseline_location_on_24"
+                       android:backgroundTint="@color/white"
+                       android:layout_alignParentRight="true"
+                       android:layout_centerVertical="true"/>
+
+                   <com.google.android.material.textfield.TextInputLayout
+                       android:id="@+id/layoutLatitude"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                       android:hint="Lintang"
+                       app:hintTextColor="@color/hintTextColor"
+                       android:layout_marginEnd="10dp"
+                       app:endIconMode="clear_text"
+                       app:counterEnabled="false"
+                       app:boxStrokeColor="@color/strokeColor"
+                       android:layout_marginTop="0dp"
+                       android:layout_toStartOf="@id/btnLokasi"
+                       app:helperText="*Required">
+
+                       <com.google.android.material.textfield.TextInputEditText
+                           android:id="@+id/etLatitude"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content" />
+
+                   </com.google.android.material.textfield.TextInputLayout>
+
+                   <com.google.android.material.textfield.TextInputLayout
+                       android:id="@+id/layoutLongitude"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                       android:hint="Bujur"
+                       app:hintTextColor="@color/hintTextColor"
+                       android:layout_marginEnd="10dp"
+                       app:endIconMode="clear_text"
+                       app:counterEnabled="false"
+                       app:boxStrokeColor="@color/strokeColor"
+                       android:layout_marginTop="5dp"
+                       android:layout_toStartOf="@id/btnLokasi"
+                       android:layout_below="@id/layoutLatitude"
+                       app:helperText="*Required">
+
+                       <com.google.android.material.textfield.TextInputEditText
+                           android:id="@+id/etLongitude"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content" />
+
+                   </com.google.android.material.textfield.TextInputLayout>
+               </RelativeLayout>
+
+               <RelativeLayout
+                   android:id="@+id/containerQR"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="17dp"
+                   android:layout_marginEnd="17dp"
+                   android:layout_marginTop="20dp">
+
+                   <ImageButton
+                       android:id="@+id/btnGenerate"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:src="@drawable/baseline_qr_code_2_24"
+                       android:backgroundTint="@color/white"
+                       android:padding="0dp"
+                       android:layout_centerVertical="true"/>
+
+                   <com.google.android.material.textfield.TextInputLayout
+                       android:id="@+id/layoutKodeQR"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                       android:hint="Kode QR"
+                       app:hintTextColor="@color/hintTextColor"
+                       android:layout_marginStart="7dp"
+                       app:endIconMode="clear_text"
+                       app:counterEnabled="false"
+                       app:boxStrokeColor="@color/strokeColor"
+                       android:layout_toEndOf="@id/btnGenerate">
+
+                       <com.google.android.material.textfield.TextInputEditText
+                           android:id="@+id/etQR"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content" />
+
+                   </com.google.android.material.textfield.TextInputLayout>
+
+               </RelativeLayout>
+
+               <Button
+                   android:id="@+id/btnTambah"
+                   android:layout_marginStart="17dp"
+                   android:layout_marginEnd="17dp"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_horizontal"
+                   android:layout_marginTop="20dp"
+                   android:text="Tambah"/>
+
+           </LinearLayout>
+
+       </androidx.cardview.widget.CardView>
+
+       <TextView
+           android:id="@+id/tv_login"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Form Tambah            Check Point"
+           android:textAlignment="center"
+           android:textColor="@color/main"
+           android:textSize="36dp"
+           android:textStyle="bold"
+           android:layout_marginBottom="30dp"
+           android:layout_above="@id/cardTambah"/>
+
+   </RelativeLayout>
 
 </FrameLayout>
