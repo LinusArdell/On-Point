@@ -21,6 +21,12 @@
            app:cardCornerRadius="10dp"
            android:layout_centerInParent="true">
 
+           <ProgressBar
+               android:id="@+id/progressBar"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center" />
+
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="match_parent"
@@ -168,6 +174,7 @@
                    android:layout_height="wrap_content"
                    android:layout_gravity="center_horizontal"
                    android:layout_marginTop="20dp"
+                   android:layout_marginBottom="20dp"
                    android:text="Tambah"/>
 
            </LinearLayout>
@@ -185,6 +192,7 @@
            android:textStyle="bold"
            android:layout_marginBottom="30dp"
            android:layout_above="@id/cardTambah"/>
+
 
    </RelativeLayout>
 
