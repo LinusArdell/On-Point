@@ -185,10 +185,10 @@
            android:id="@+id/tv_login"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:text="Form Tambah            Check Point"
+           android:text=" Tambah Check Point"
            android:textAlignment="center"
            android:textColor="@color/main"
-           android:textSize="36dp"
+           android:textSize="30dp"
            android:textStyle="bold"
            android:layout_marginBottom="30dp"
            android:layout_above="@id/cardTambah"/>
