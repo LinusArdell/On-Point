@@ -40,7 +40,7 @@ public class FragmentProfile extends Fragment {
 
         initializeUiComponents(view);
 
-//        getCurrentUser();
+        getCurrentUser();
 
         setActionListener();
 

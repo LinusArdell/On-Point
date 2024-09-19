@@ -9,7 +9,7 @@
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="10dp"
     app:cardCornerRadius="10dp"
-    app:cardElevation="8dp">
+    app:cardElevation="2dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -66,11 +66,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_date"
+            android:id="@+id/recTanggal"
             android:text="Tanggal"
-            android:layout_toEndOf="@id/tv_user"
             android:layout_marginStart="30dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="15dp"
             android:textAlignment="textEnd"
             android:textColor="@color/black"
             android:textSize="14sp"
@@ -80,7 +79,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_user"
+            android:id="@+id/recUser"
             android:text="User"
             android:gravity="center_vertical"
             android:textColor="@color/black"
@@ -91,6 +90,38 @@
             android:maxLines="1"
             android:layout_marginBottom="12dp"
             android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/recLongitude"
+            android:text="User"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_toEndOf="@id/recImage"
+            android:layout_below="@id/recQr"
+            android:layout_marginStart="10dp"
+            android:maxLines="1"
+            android:layout_marginBottom="12dp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/recLatitude"
+            android:text="User"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_toEndOf="@id/recImage"
+            android:layout_below="@id/recQr"
+            android:layout_marginStart="10dp"
+            android:maxLines="1"
+            android:layout_marginBottom="12dp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

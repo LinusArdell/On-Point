@@ -1,7 +1,7 @@
 package com.test.onpoint.Class;
 
 public class PointDataClass {
-    String lokasi, qrCode, userName, dataDate, dataTime;
+    String lokasi, qrCode, userName, dataDate, dataTime, key;
     double latitude, longitude;
 
     public PointDataClass() {
@@ -44,5 +44,13 @@ public class PointDataClass {
 
     public String getDataTime() {
         return dataTime;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

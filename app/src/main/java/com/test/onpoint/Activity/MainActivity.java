@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
-    } //Setting Bottom Nav Menu
+    }
 
     private  void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
