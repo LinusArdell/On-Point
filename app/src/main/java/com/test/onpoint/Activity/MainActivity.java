@@ -13,7 +13,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,6 +23,7 @@ import com.test.onpoint.Fragment.FragmentBeranda;
 import com.test.onpoint.Fragment.FragmentProfile;
 import com.test.onpoint.Fragment.FragmentTambah;
 import com.test.onpoint.R;
+import com.test.onpoint.Fragment.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_profile:
                     replaceFragment(new FragmentProfile());
+                    break;
+                case R.id.nav_search:
+                    replaceFragment(new SearchFragment());
                     break;
             }
             return true;

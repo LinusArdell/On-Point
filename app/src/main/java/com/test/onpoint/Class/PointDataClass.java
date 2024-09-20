@@ -3,6 +3,7 @@ package com.test.onpoint.Class;
 public class PointDataClass {
     String lokasi, qrCode, userName, dataDate, dataTime, key;
     double latitude, longitude;
+    Boolean visibility;
 
     public PointDataClass() {
 
@@ -16,6 +17,7 @@ public class PointDataClass {
         this.userName = userName;
         this.dataDate = dataDate;
         this.dataTime = dataTime;
+        this.visibility = false;
     }
 
     public String getLokasi() {
@@ -52,5 +54,13 @@ public class PointDataClass {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public boolean isExpanded() {
+        return visibility;
+    }
+
+    public void setExpanded(boolean visibility) {
+        this.visibility = visibility;
     }
 }

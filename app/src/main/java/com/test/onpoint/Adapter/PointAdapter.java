@@ -34,6 +34,8 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
+        PointDataClass data = dataList.get(position);
+
         String tanggal = dataList.get(position).getDataDate();
         String waktu = dataList.get(position).getDataTime();
         String hari = tanggal + " , " + waktu;
@@ -52,7 +54,7 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
 class MyViewHolder extends RecyclerView.ViewHolder {
 
-    TextView vhQR, vhLokasi, vhUsername, vhTanggal, vhLatitude, vhLongitude;
+    TextView vhQR, vhLokasi, vhUsername, vhTanggal, vhLatitude, vhLongitude, vhDetail;
 
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -63,5 +65,7 @@ class MyViewHolder extends RecyclerView.ViewHolder {
         vhTanggal = itemView.findViewById(R.id.recTanggal);
         vhLatitude = itemView.findViewById(R.id.recLatitude);
         vhLongitude = itemView.findViewById(R.id.recLongitude);
+
+        vhDetail = itemView.findViewById(R.id.recDetail);
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -74,6 +75,7 @@
             android:textColor="@color/black"
             android:textSize="14sp"
             android:layout_below="@id/recLokasi"
+            android:layout_toEndOf="@id/recUser"
             android:textStyle="bold"/>
 
         <TextView
@@ -94,34 +96,53 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/recLongitude"
-            android:text="User"
+            android:id="@+id/recDetail"
+            android:text="Tampilkan Lebih banyak >"
             android:gravity="center_vertical"
             android:textColor="@color/black"
             android:textSize="14sp"
-            android:layout_toEndOf="@id/recImage"
-            android:layout_below="@id/recQr"
-            android:layout_marginStart="10dp"
-            android:maxLines="1"
+            android:layout_below="@id/recImage"
+            android:layout_marginStart="20dp"
             android:layout_marginBottom="12dp"
-            android:textStyle="bold"
-            android:visibility="gone"/>
+            android:layout_marginTop="12dp"
+            android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/expandableCard"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/recLatitude"
-            android:text="User"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:layout_toEndOf="@id/recImage"
-            android:layout_below="@id/recQr"
-            android:layout_marginStart="10dp"
-            android:maxLines="1"
-            android:layout_marginBottom="12dp"
-            android:textStyle="bold"
-            android:visibility="gone"/>
+            android:layout_below="@id/recDetail"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Titik Koordinat : "
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/recLongitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Longitude"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                android:layout_marginStart="10dp"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/recLatitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Latitude"
+                app:layout_constraintStart_toEndOf="@+id/recLongitude"
+                tools:ignore="MissingConstraints"
+                android:layout_marginStart="10dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
 
