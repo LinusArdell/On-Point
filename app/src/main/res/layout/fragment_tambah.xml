@@ -79,7 +79,8 @@
                        android:src="@drawable/baseline_location_on_24"
                        android:backgroundTint="@color/white"
                        android:layout_alignParentRight="true"
-                       android:layout_centerVertical="true"/>
+                       android:layout_centerVertical="true"
+                       android:visibility="gone"/>
 
                    <com.google.android.material.textfield.TextInputLayout
                        android:id="@+id/layoutLatitude"

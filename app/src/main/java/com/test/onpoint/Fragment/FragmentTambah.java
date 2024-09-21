@@ -110,6 +110,9 @@ public class FragmentTambah extends Fragment {
         String latitudeStr = etLatitude.getText().toString();
         String longitudeStr = etLongitude.getText().toString();
 
+        String keterangan = "";
+        boolean periksa = false;
+
         if (latitudeStr.isEmpty() || longitudeStr.isEmpty()) {
             Toast.makeText(getContext(), "Latitude dan Longitude tidak boleh kosong", Toast.LENGTH_SHORT).show();
             return;
@@ -144,7 +147,7 @@ public class FragmentTambah extends Fragment {
                             SimpleDateFormat simpleTime = new SimpleDateFormat("HH.mm.ss", Locale.US);
                             String currentTime = simpleTime.format(Calendar.getInstance().getTime());
 
-                            PointDataClass dataClass = new PointDataClass(lokasi, qrCode, latitude, longitude, finalUser[0], currentDate, currentTime);
+                            PointDataClass dataClass = new PointDataClass(lokasi, qrCode, latitude, longitude, finalUser[0], currentDate, currentTime, keterangan, periksa);
 
                             FirebaseDatabase.getInstance().getReference("Check Point").child(qrCode).setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

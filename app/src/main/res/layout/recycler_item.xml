@@ -95,7 +95,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:id="@+id/recDetail"
             android:text="Tampilkan Lebih banyak >"
             android:gravity="center_vertical"
@@ -115,14 +115,16 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="Titik Koordinat : "
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"
+                android:visibility="visible"/>
 
             <TextView
                 android:id="@+id/recLongitude"
@@ -131,7 +133,8 @@
                 android:text="Longitude"
                 app:layout_constraintStart_toEndOf="@+id/textView"
                 android:layout_marginStart="10dp"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"
+                android:visibility="visible"/>
 
             <TextView
                 android:id="@+id/recLatitude"
@@ -140,7 +143,48 @@
                 android:text="Latitude"
                 app:layout_constraintStart_toEndOf="@+id/recLongitude"
                 tools:ignore="MissingConstraints"
-                android:layout_marginStart="10dp"/>
+                android:layout_marginStart="10dp"
+                android:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Status Pengecekan :"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                tools:ignore="MissingConstraints" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                tools:ignore="MissingConstraints"
+                android:layout_marginTop="10dp">
+
+
+                <ImageView
+                    android:id="@+id/iconEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_edit_24"
+                    app:layout_constraintEnd_toStartOf="@+id/recUpdate"
+                    tools:ignore="MissingConstraints"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"/>
+
+                <TextView
+                    android:id="@+id/recUpdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:gravity="center_vertical"
+                    android:text="Update"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:ignore="MissingConstraints"
+                    android:layout_toEndOf="@id/iconEdit"/>
+            </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

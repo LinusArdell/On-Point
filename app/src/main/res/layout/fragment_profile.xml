@@ -82,7 +82,7 @@
 
             <TextView
                 android:id="@+id/tvResetPassword"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
                 android:text="Reset Password"
@@ -108,7 +108,7 @@
 
             <TextView
                 android:id="@+id/tvDowloadExcel"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
                 android:text="Download Excel"
@@ -134,7 +134,7 @@
 
             <TextView
                 android:id="@+id/tvRegister"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
                 android:text="Registrasi Akun Baru"
@@ -160,7 +160,7 @@
 
             <TextView
                 android:id="@+id/tvLogout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
                 android:text="Logout"

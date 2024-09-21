@@ -3,7 +3,6 @@ package com.test.onpoint.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,7 +25,7 @@ import com.test.onpoint.Class.UserClass;
 import com.test.onpoint.R;
 
 public class RegisterActivity extends AppCompatActivity {
-    Button btn_Register;
+    Button btn_Register, btn_Kembali;
     TextInputEditText etNama, etEmail, etPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -45,6 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         initializeComponents();
+
+        setBtn_Kembali();
 
         btn_Register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,10 +134,21 @@ public class RegisterActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         userDatabase = FirebaseDatabase.getInstance().getReference();
+
+        btn_Kembali = findViewById(R.id.btn_back);
     }
 
     private void saveUserData(String userId, String username, String email, String userPicture, String role) {
         UserClass userData = new UserClass(username, email, userPicture, role);
         userDatabase.child("Users").child(userId).setValue(userData);
+    }
+
+    private void setBtn_Kembali(){
+        btn_Kembali.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 }

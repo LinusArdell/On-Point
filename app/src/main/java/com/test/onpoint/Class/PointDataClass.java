@@ -1,15 +1,15 @@
 package com.test.onpoint.Class;
 
 public class PointDataClass {
-    String lokasi, qrCode, userName, dataDate, dataTime, key;
+    String lokasi, qrCode, userName, dataDate, dataTime, key, keterangan;
     double latitude, longitude;
-    Boolean visibility;
+    boolean expanded, periksa;
 
     public PointDataClass() {
 
     }
 
-    public PointDataClass(String lokasi, String qrCode, double latitude, double longitude, String userName, String dataDate, String dataTime){
+    public PointDataClass(String lokasi, String qrCode, double latitude, double longitude, String userName, String dataDate, String dataTime, String keterangan, boolean periksa){
         this.lokasi = lokasi;
         this.qrCode = qrCode;
         this.latitude = latitude;
@@ -17,7 +17,9 @@ public class PointDataClass {
         this.userName = userName;
         this.dataDate = dataDate;
         this.dataTime = dataTime;
-        this.visibility = false;
+        this.expanded = false;
+        this.keterangan = keterangan;
+        this.periksa = periksa;
     }
 
     public String getLokasi() {
@@ -57,10 +59,18 @@ public class PointDataClass {
     }
 
     public boolean isExpanded() {
-        return visibility;
+        return expanded;
     }
 
-    public void setExpanded(boolean visibility) {
-        this.visibility = visibility;
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public boolean isPeriksa() {
+        return periksa;
     }
 }
