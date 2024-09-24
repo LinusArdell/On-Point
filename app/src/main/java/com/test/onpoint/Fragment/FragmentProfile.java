@@ -188,7 +188,11 @@ public class FragmentProfile extends Fragment {
                     }
                 });
             } else {
-                Toast.makeText(getContext(), "Autentikasi gagal, silahkan login kembali", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+                requireActivity().finish();
             }
         } else {
             loadUserFromSharedPreferences();

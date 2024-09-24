@@ -28,7 +28,6 @@ public class SplashActivity extends AppCompatActivity {
 
     Button btnOk;
     Dialog dialog;
-    private static final int PERMISSION_REQUEST_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +46,6 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         setHDL();
-
-        if (checkPermissions()) {
-            setHDL();
-        } else {
-            requestPermissions();
-        }
     }
 
     public static boolean isNetworkStatusAvialable (Context context) {
@@ -65,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    public void setHDL(){
+    private void setHDL(){
         Handler HDL = new Handler();
         HDL.postDelayed(new Runnable() {
             @Override
@@ -103,42 +96,5 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
         }, 2000);
-    }
-
-    private boolean checkPermissions() {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPermissions() {
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_FINE_LOCATION
-        }, PERMISSION_REQUEST_CODE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            boolean allGranted = true;
-            for (int result : grantResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    allGranted = false;
-                    break;
-                }
-            }
-            if (allGranted) {
-                setHDL();
-            } else {
-                Toast.makeText(this, "Semua izin diperlukan untuk melanjutkan", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
     }
 }

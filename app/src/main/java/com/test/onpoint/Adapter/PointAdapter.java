@@ -276,7 +276,6 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     private File saveBitmap(Bitmap bitmap, String qrCode) {
-        // Nama file
         String fileName = "QR_" + qrCode + ".png";
 
         File directory = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "QRCode");
