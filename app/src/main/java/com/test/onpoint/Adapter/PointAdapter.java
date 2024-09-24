@@ -2,30 +2,66 @@ package com.test.onpoint.Adapter;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.media.MediaScannerConnection;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 import com.test.onpoint.Activity.EditActivity;
 import com.test.onpoint.Activity.RiwayatActivity;
 import com.test.onpoint.Class.PointDataClass;
+import com.test.onpoint.Class.UserClass;
 import com.test.onpoint.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     private Context context;
     private List<PointDataClass> dataList;
+    FirebaseAuth userAuth;
+    DatabaseReference userDatabase, riwayatDatabase, reference;
 
     public PointAdapter(@NonNull Context context, List<PointDataClass> dataList){
         this.context = context;
@@ -48,6 +84,9 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         PointDataClass data = dataList.get(position);
+        userAuth = FirebaseAuth.getInstance();
+        userDatabase = FirebaseDatabase.getInstance().getReference("Users");
+        FirebaseUser currentUser = userAuth.getCurrentUser();
 
         String tanggal = data.getDataDate();
         String waktu = data.getDataTime();
@@ -117,6 +156,154 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
             context.startActivity(i);
         });
+
+        String[] userRole = {""};
+
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+
+            userDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        UserClass userData = snapshot.getValue(UserClass.class);
+
+                        userRole[0] = userData.getRole();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(context, "Gagal mengambil data user", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(context, "Autentikasi gagal, silahkan login kembali", Toast.LENGTH_SHORT).show();
+        }
+
+        holder.cardView.setOnLongClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+            View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_card_item, null);
+            builder.setView(dialogView);
+
+            MaterialButton btnDownloadQR = dialogView.findViewById(R.id.btnDownloadQR);
+            MaterialButton btnHapus = dialogView.findViewById(R.id.btnHapus);
+
+            AlertDialog dialog = builder.create();
+
+            btnDownloadQR.setOnClickListener(view -> {
+                downloadQRCode(data.getQrCode());
+                dialog.dismiss();
+            });
+
+            btnHapus.setOnClickListener(view -> {
+                if (userRole[0].equals("Admin")) {
+                    deleteData(data.getKey());
+                } else {
+                    Toast.makeText(context, "Hanya admin yang dapat menghapus data", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            });
+
+            dialog.show();
+            return true;
+        });
+    }
+
+    private void downloadQRCode(String qrCode) {
+        int size = 500;
+
+        try {
+            BitMatrix bitMatrix = new MultiFormatWriter().encode(qrCode, BarcodeFormat.QR_CODE, size, size);
+
+            Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565);
+            for (int x = 0; x < size; x++) {
+                for (int y = 0; y < size; y++) {
+                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
+                }
+            }
+
+            Bitmap qrWithTextBitmap = addTextToQRCode(bitmap, qrCode);
+
+            File savedFile = saveBitmap(qrWithTextBitmap, qrCode);
+
+            if (savedFile != null) {
+                scanMedia(savedFile);
+
+            } else {
+                Toast.makeText(context, "Gagal menyimpan QR code", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (WriterException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Gagal membuat QR code", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private Bitmap addTextToQRCode(Bitmap qrBitmap, String qrCode) {
+        int width = qrBitmap.getWidth();
+        int height = qrBitmap.getHeight();
+
+        Bitmap bitmapWithText = Bitmap.createBitmap(width, height + 100, Bitmap.Config.RGB_565);
+
+        Canvas canvas = new Canvas(bitmapWithText);
+        canvas.drawColor(Color.WHITE);
+
+        canvas.drawBitmap(qrBitmap, 0, 0, null);
+
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(40);
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        int xPos = canvas.getWidth() / 2;
+        int yPos = height + 50;
+
+        canvas.drawText(qrCode, xPos, yPos, paint);
+
+        return bitmapWithText;
+    }
+
+    private File saveBitmap(Bitmap bitmap, String qrCode) {
+        // Nama file
+        String fileName = "QR_" + qrCode + ".png";
+
+        File directory = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "QRCode");
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        File file = new File(directory, fileName);
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            outputStream.flush();
+
+            Toast.makeText(context, "QR code disimpan di: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void scanMedia(File file) {
+        MediaScannerConnection.scanFile(context, new String[]{file.getAbsolutePath()}, null, (path, uri) -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(uri, "image/*");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            context.startActivity(intent);
+        });
+    }
+
+    private void deleteData(String key) {
+        reference = FirebaseDatabase.getInstance().getReference("Check Point");
+        riwayatDatabase = FirebaseDatabase.getInstance().getReference("Riwayat");
+
+        reference.child(key).removeValue();
+        riwayatDatabase.child(key).removeValue();
+
+        Toast.makeText(context, "Data dengan key: " + key + " dihapus", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -144,9 +331,6 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
                     }
                 });
     }
-
-
-
 }
 
 class MyViewHolder extends RecyclerView.ViewHolder {
@@ -155,6 +339,7 @@ class MyViewHolder extends RecyclerView.ViewHolder {
     ConstraintLayout vhExpandableCard;
 
     RelativeLayout vhRelativeEdit, vhRelativeHistory;
+    CardView cardView;
 
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -166,7 +351,7 @@ class MyViewHolder extends RecyclerView.ViewHolder {
         vhLatitude = itemView.findViewById(R.id.tvLatitude);
         vhLongitude = itemView.findViewById(R.id.tvLongitude);
         vhTextview = itemView.findViewById(R.id.textView);
-
+        cardView = itemView.findViewById(R.id.recycler_card);
         vhExpandableCard = itemView.findViewById(R.id.expandableCard);
         vhDetail = itemView.findViewById(R.id.recDetail);
 

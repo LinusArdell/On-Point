@@ -257,7 +257,7 @@ public class FragmentProfile extends Fragment {
     }
 
     private void setDownloadExcel(){
-        String url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlBkOtlUi_8ROqZxxeID4-pniUSl4s9plF5WVtonEEep3EJRBC1VOFvVhOnSngu8pCOaNQJaepMBdk/pub?output=xlsx";
+        String url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRRB9jAk5eg0GdeypvNtW2E9gsLaAX5A3ZPP6GNyzX_PPl4ZQ-grTjNFVhYaPCreCzHapALPg8gLQkG/pub?output=xlsx";
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setTitle("File Spreadsheet");
@@ -268,7 +268,7 @@ public class FragmentProfile extends Fragment {
         DownloadManager downloadManager = (DownloadManager) requireContext().getSystemService(Context.DOWNLOAD_SERVICE);
         if (downloadManager != null) {
             downloadManager.enqueue(request);
-            Toast.makeText(requireContext(), "Mengunduh file...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Berhasil", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(requireContext(), "Gagal mengakses DownloadManager", Toast.LENGTH_SHORT).show();
         }
