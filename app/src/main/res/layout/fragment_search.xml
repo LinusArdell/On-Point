@@ -6,25 +6,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.SearchFragment">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardElevation="10dp"
-        app:cardCornerRadius="0dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.appcompat.widget.SearchView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/search"
-            app:iconifiedByDefault="false"
-            app:searchHintIcon="@null"
-            app:queryHint="Search..."
-            android:focusable="false"
-            app:closeIcon="@drawable/clear"
-            app:searchIcon="@drawable/baseline_search_24"
-            android:layout_centerVertical="true" />
+            app:cardElevation="10dp"
+            app:cardCornerRadius="0dp">
 
-    </androidx.cardview.widget.CardView>
+            <androidx.appcompat.widget.SearchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/search"
+                app:iconifiedByDefault="false"
+                app:searchHintIcon="@null"
+                app:queryHint="Search..."
+                android:focusable="false"
+                app:closeIcon="@drawable/clear"
+                app:searchIcon="@drawable/baseline_search_24"
+                android:layout_centerVertical="true" />
 
+        </androidx.cardview.widget.CardView>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 </FrameLayout>

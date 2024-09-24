@@ -32,6 +32,11 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
         this.dataList = dataList;
     }
 
+    public void updateData(List<PointDataClass> newData) {
+        this.dataList = newData;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -139,6 +144,8 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
                     }
                 });
     }
+
+
 
 }
 

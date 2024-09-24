@@ -31,10 +31,9 @@ import java.util.List;
 public class FragmentBeranda extends Fragment {
 
     RecyclerView recyclerView;
-    DatabaseReference databaseReferences, mDatabase;
+    DatabaseReference databaseReferences;
     PointAdapter adapter;
     List<PointDataClass> dataList;
-    GridLayoutManager gridLayoutManager;
     ValueEventListener eventListener;
 
 
