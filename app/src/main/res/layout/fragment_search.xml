@@ -27,7 +27,9 @@
                 android:focusable="false"
                 app:closeIcon="@drawable/clear"
                 app:searchIcon="@drawable/baseline_search_24"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
 
         </androidx.cardview.widget.CardView>
 

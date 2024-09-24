@@ -199,7 +199,17 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
             btnHapus.setOnClickListener(view -> {
                 if (userRole[0].equals("Admin")) {
-                    deleteData(data.getKey());
+                    new AlertDialog.Builder(context)
+                            .setTitle("Konfirmasi Penghapusan")
+                            .setMessage("Apakah Anda yakin ingin menghapus data ini?")
+                            .setPositiveButton("Ya", (dialogInterface, which) -> {
+                                deleteData(data.getKey());
+                                Toast.makeText(context, "Data berhasil dihapus", Toast.LENGTH_SHORT).show();
+                            })
+                            .setNegativeButton("Tidak", (dialogInterface, which) -> {
+                                dialogInterface.dismiss();
+                            })
+                            .show();
                 } else {
                     Toast.makeText(context, "Hanya admin yang dapat menghapus data", Toast.LENGTH_SHORT).show();
                 }
