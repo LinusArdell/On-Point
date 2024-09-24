@@ -1,12 +1,19 @@
 package com.test.onpoint.Fragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -28,6 +35,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
+import com.test.onpoint.Activity.MainActivity;
 import com.test.onpoint.Class.PointDataClass;
 import com.test.onpoint.Class.UserClass;
 import com.test.onpoint.R;
@@ -46,6 +56,8 @@ public class FragmentTambah extends Fragment {
     private ProgressBar progress_Bar;
     private ProgressDialog progressDialog;
     private DatabaseReference itemDatabase;
+    private ActivityResultLauncher<ScanOptions> qrCodeLauncher;
+    private ActivityResultLauncher<String> requestPermissionLauncher;
     private FirebaseAuth firebaseAuth;
 
     @Nullable
@@ -55,7 +67,11 @@ public class FragmentTambah extends Fragment {
 
         setupUiComponents(view);
 
+        initActivityResultLaunchers();
+
         setUpButtonListener();
+
+        setBtnGenerate();
 
         return view;
     }
@@ -73,6 +89,71 @@ public class FragmentTambah extends Fragment {
         progressDialog = new ProgressDialog(getContext());
 
         firebaseAuth = FirebaseAuth.getInstance();
+    }
+
+    private void setBtnGenerate(){
+        btnGenerate.setOnClickListener(view -> checkPermissionAndShowActivity(getContext()));
+    }
+
+    private void checkPermissionAndShowActivity(Context context) {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED) {
+            showCamera();
+        } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
+            Toast.makeText(context, "Camera permission required", Toast.LENGTH_SHORT).show();
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+        }
+    }
+
+    private void showCamera() {
+        ScanOptions options = new ScanOptions();
+        options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
+        options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES);
+        options.setPrompt("Scan QR Code");
+        options.setCameraId(0);
+        options.setBeepEnabled(false);
+        options.setBarcodeImageEnabled(true);
+        options.setOrientationLocked(false);
+
+        qrCodeLauncher.launch(options);
+    }
+
+    private void initActivityResultLaunchers(){
+        requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
+            @Override
+            public void onActivityResult(Boolean isGranted) {
+                if (isGranted) {
+                    showCamera();
+                }
+            }
+        });
+
+        qrCodeLauncher = registerForActivityResult(new ScanContract(), result -> {
+            if (result.getContents() == null) {
+                Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+            } else {
+                setResult(result.getContents());
+            }
+        });
+    }
+
+    private void requestPermissionLauncher () {
+        requestPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
+                        Toast.makeText(getContext(), "Access Granted", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Camera permission required", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+    }
+
+    public void setResult(String contents){
+        etQR.setText(contents);
     }
 
     private void setUpButtonListener (){
@@ -149,10 +230,14 @@ public class FragmentTambah extends Fragment {
 
                             PointDataClass dataClass = new PointDataClass(lokasi, qrCode, latitude, longitude, finalUser[0], currentDate, currentTime, keterangan, periksa);
 
+                            String historyFormat = qrCode + " " + currentDate;
+
                             FirebaseDatabase.getInstance().getReference("Check Point").child(qrCode).setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
+
+                                        FirebaseDatabase.getInstance().getReference("Riwayat").child(qrCode).child(historyFormat).setValue(dataClass);
                                         progress_Bar.setVisibility(View.GONE);
                                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                                         builder.setMessage("Data berhasil ditambahkan").setPositiveButton("OK", new DialogInterface.OnClickListener() {

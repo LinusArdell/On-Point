@@ -16,4 +16,6 @@
     <color name="hintTextColor">#FF000000</color>
     <color name="iconColor">#FF000000</color>
 
+    <color name="red">#F44336</color>
+
 </resources>

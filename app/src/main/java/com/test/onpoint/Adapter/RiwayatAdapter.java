@@ -3,7 +3,6 @@ package com.test.onpoint.Adapter;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,33 +14,32 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.test.onpoint.Activity.RiwayatActivity;
 import com.test.onpoint.Class.PointDataClass;
+import com.test.onpoint.Class.RiwayatDataClass;
 import com.test.onpoint.R;
 
 import java.util.List;
 
-public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class RiwayatAdapter extends RecyclerView.Adapter<RiwayatHolder>{
 
     private Context context;
-    private List<PointDataClass> dataList;
+    private List<RiwayatDataClass> dataList;
 
-    public PointAdapter(@NonNull Context context, List<PointDataClass> dataList){
+    public RiwayatAdapter(@NonNull Context context, List<RiwayatDataClass> dataList){
         this.context = context;
         this.dataList = dataList;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
-        return new MyViewHolder(view);
+    public RiwayatHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_history, parent, false);
+        return new RiwayatHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
-        PointDataClass data = dataList.get(position);
+    public void onBindViewHolder(@NonNull RiwayatHolder holder, int position) {
+        RiwayatDataClass data = dataList.get(position);
 
         String tanggal = data.getDataDate();
         String waktu = data.getDataTime();
@@ -77,28 +75,6 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
             data.setExpanded(!data.isExpanded());
             notifyItemChanged(position);
         });
-
-        holder.vhRelativeHistory.setOnClickListener(v -> {
-            Intent i = new Intent(context, RiwayatActivity.class);
-
-            i.putExtra("KodeQR", data.getQrCode());
-            i.putExtra("Lokasi", data.getLokasi());
-            i.putExtra("Latitude", data.getLatitude());
-            i.putExtra("Longitude", data.getLongitude());
-            i.putExtra("User", data.getUserName());
-            i.putExtra("Hari", data.getDataDate());
-            i.putExtra("Waktu", data.getDataTime());
-            i.putExtra("Key", data.getKey());
-            i.putExtra("Keterangan", data.getKeterangan());
-            i.putExtra("Status", data.isPeriksa());
-
-            context.startActivity(i);
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return dataList.size();
     }
 
     private void expandView(View view) {
@@ -122,16 +98,20 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 });
     }
 
+    @Override
+    public int getItemCount() {
+        return dataList.size();
+    }
 }
 
-class MyViewHolder extends RecyclerView.ViewHolder {
+class RiwayatHolder extends RecyclerView.ViewHolder {
 
     TextView vhQR, vhLokasi, vhUsername, vhTanggal, vhLatitude, vhLongitude, vhDetail, vhTextview, vhStatus, dtKodeQR, dtLokasi, dtUser;
     ConstraintLayout vhExpandableCard;
 
     RelativeLayout vhRelativeEdit, vhRelativeHistory;
 
-    public MyViewHolder(@NonNull View itemView) {
+    public RiwayatHolder(@NonNull View itemView) {
         super(itemView);
 
         vhQR = itemView.findViewById(R.id.recQr);

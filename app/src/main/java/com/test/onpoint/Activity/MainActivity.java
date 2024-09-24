@@ -237,9 +237,13 @@ public class MainActivity extends AppCompatActivity {
 
                                             PointDataClass dataClass = new PointDataClass(lokasi, kodeQR, lintang, bujur, finalUser[0], currentDate, currentTime, keterangan, check);
 
+                                            String historyFormat = kodeQR + " " + currentDate;
+
                                             FirebaseDatabase.getInstance().getReference("Check Point").child(kodeQR).setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
+                                                    FirebaseDatabase.getInstance().getReference("Riwayat").child(kodeQR).child(historyFormat).setValue(dataClass);
+
                                                     Toast.makeText(MainActivity.this, "Data berhasil disimpan", Toast.LENGTH_SHORT).show();
                                                     dialog.dismiss();
                                                 }
