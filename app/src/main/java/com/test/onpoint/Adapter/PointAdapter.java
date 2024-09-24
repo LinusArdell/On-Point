@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.test.onpoint.Activity.EditActivity;
 import com.test.onpoint.Activity.RiwayatActivity;
 import com.test.onpoint.Class.PointDataClass;
 import com.test.onpoint.R;
@@ -80,6 +81,23 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         holder.vhRelativeHistory.setOnClickListener(v -> {
             Intent i = new Intent(context, RiwayatActivity.class);
+
+            i.putExtra("KodeQR", data.getQrCode());
+            i.putExtra("Lokasi", data.getLokasi());
+            i.putExtra("Latitude", data.getLatitude());
+            i.putExtra("Longitude", data.getLongitude());
+            i.putExtra("User", data.getUserName());
+            i.putExtra("Hari", data.getDataDate());
+            i.putExtra("Waktu", data.getDataTime());
+            i.putExtra("Key", data.getKey());
+            i.putExtra("Keterangan", data.getKeterangan());
+            i.putExtra("Status", data.isPeriksa());
+
+            context.startActivity(i);
+        });
+
+        holder.vhRelativeEdit.setOnClickListener(v -> {
+            Intent i = new Intent(context, EditActivity.class);
 
             i.putExtra("KodeQR", data.getQrCode());
             i.putExtra("Lokasi", data.getLokasi());

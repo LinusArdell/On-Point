@@ -1,10 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Activity.EditActivity">
+    tools:context=".Activity.EditActivity"
+    android:orientation="vertical">
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main"
+        app:titleTextColor="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/tool_bar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="KEMBALI"
+                app:tint="@color/white"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/app_name"
+                android:textSize="21dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/tv_title"/>
+
+        </RelativeLayout>
+
+    </com.google.android.material.navigation.NavigationView>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,7 +68,7 @@
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -169,7 +212,7 @@
                 </RelativeLayout>
 
                 <Button
-                    android:id="@+id/btnTambah"
+                    android:id="@+id/btnSimpan"
                     android:layout_marginStart="17dp"
                     android:layout_marginEnd="17dp"
                     android:layout_width="match_parent"
@@ -177,7 +220,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
-                    android:text="Tambah"/>
+                    android:text="SIMPAN"/>
 
             </LinearLayout>
 
@@ -187,7 +230,7 @@
             android:id="@+id/tv_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" Tambah Check Point"
+            android:text="Edit Check Point"
             android:textAlignment="center"
             android:textColor="@color/main"
             android:textSize="30dp"
@@ -198,4 +241,4 @@
 
     </RelativeLayout>
 
-</FrameLayout>
+</LinearLayout>

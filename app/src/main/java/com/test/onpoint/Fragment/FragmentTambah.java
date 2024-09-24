@@ -37,14 +37,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
-import com.test.onpoint.Activity.MainActivity;
 import com.test.onpoint.Class.PointDataClass;
 import com.test.onpoint.Class.UserClass;
 import com.test.onpoint.R;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -83,7 +80,7 @@ public class FragmentTambah extends Fragment {
         etQR = view.findViewById(R.id.etQR);
         btnLokasi = view.findViewById(R.id.btnLokasi);
         btnGenerate = view.findViewById(R.id.btnGenerate);
-        btnTambah = view.findViewById(R.id.btnTambah);
+        btnTambah = view.findViewById(R.id.btnSimpan);
         progress_Bar = view.findViewById(R.id.progressBar);
         progress_Bar.setVisibility(View.GONE);
         progressDialog = new ProgressDialog(getContext());

@@ -6,28 +6,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.SearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/customButton"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Google Account"
-        android:textColor="@color/black"
-        android:drawableStart="@drawable/baseline_person_24"
-        android:drawablePadding="8dp"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        app:iconTint="@color/black"
-        app:iconPadding="8dp"
-        app:backgroundTint="@color/main"
-        app:cornerRadius="50dp"
-        android:elevation="4dp"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+        app:cardElevation="10dp"
+        app:cardCornerRadius="0dp">
+
+        <androidx.appcompat.widget.SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search"
+            app:iconifiedByDefault="false"
+            app:searchHintIcon="@null"
+            app:queryHint="Search..."
+            android:focusable="false"
+            app:closeIcon="@drawable/clear"
+            app:searchIcon="@drawable/baseline_search_24"
+            android:layout_centerVertical="true" />
+
+    </androidx.cardview.widget.CardView>
 
 
 </FrameLayout>

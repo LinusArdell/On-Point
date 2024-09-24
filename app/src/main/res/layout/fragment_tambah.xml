@@ -168,7 +168,7 @@
                </RelativeLayout>
 
                <Button
-                   android:id="@+id/btnTambah"
+                   android:id="@+id/btnSimpan"
                    android:layout_marginStart="17dp"
                    android:layout_marginEnd="17dp"
                    android:layout_width="match_parent"
