@@ -3,6 +3,7 @@ package com.test.onpoint.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -50,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -62,18 +65,18 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
-        FirebaseUser user = auth.getCurrentUser();
+        if (!checkPermissions()) {
+            requestPermissions();
+        } else {
+            FirebaseUser user = auth.getCurrentUser();
 
-        if(user != null){
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
+            if(user != null){
+                finish();
+                startActivity(new Intent(this, MainActivity.class));
+            }
+
+            setOnClick();
         }
-
-        setOnClick();
-
-        checkPermissions();
-
-        requestPermissions();
     }
 
     public void initializeUiComponents(){
@@ -148,53 +151,21 @@ public class LoginActivity extends AppCompatActivity {
                     break;
                 }
             }
+
             if (allGranted) {
-                setHDL();
+                FirebaseUser user = auth.getCurrentUser();
+
+                if(user != null){
+                    finish();
+                    startActivity(new Intent(this, MainActivity.class));
+                }
+
+                setOnClick();
             } else {
                 Toast.makeText(this, "Semua izin diperlukan untuk melanjutkan", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }
-    }
-
-    public void setHDL(){
-        Handler HDL = new Handler();
-        HDL.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isNetworkStatusAvialable(getApplicationContext())){
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
-                } else {
-                    HDL.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            dialog = new Dialog(LoginActivity.this);
-                            dialog.setContentView(R.layout.dialog_no_internet);
-                            dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                            dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_logout_bg));
-                            dialog.setCancelable(false);
-
-                            btnOk = dialog.findViewById(R.id.noInternetOk);
-
-                            dialog.show();
-
-                            btnOk.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dialog.dismiss();
-                                    finish();
-                                }
-                            });
-
-                            Toast.makeText(LoginActivity.this, "Tidak ada akses internet", Toast.LENGTH_LONG).show();
-                        }
-
-                    },1000);
-                }
-            }
-        }, 2000);
     }
 
     public static boolean isNetworkStatusAvialable (Context context) {

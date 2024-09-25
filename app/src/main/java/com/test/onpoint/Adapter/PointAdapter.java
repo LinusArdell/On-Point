@@ -62,6 +62,7 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
     private List<PointDataClass> dataList;
     FirebaseAuth userAuth;
     DatabaseReference userDatabase, riwayatDatabase, reference;
+    public boolean success = false;
 
     public PointAdapter(@NonNull Context context, List<PointDataClass> dataList){
         this.context = context;
@@ -193,8 +194,17 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
             AlertDialog dialog = builder.create();
 
             btnDownloadQR.setOnClickListener(view -> {
-                downloadQRCode(data.getQrCode());
-                dialog.dismiss();
+                File folder = new File(Environment.getExternalStorageDirectory()
+                        +"/Documents/"+ context.getString(R.string.folder_name));
+                String fileName = "QR_" + data.getQrCode() + ".png";
+
+                try {
+                        downloadQRCode(data.getQrCode());
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                    success = false;
+                }
             });
 
             btnHapus.setOnClickListener(view -> {
@@ -276,25 +286,31 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     private File saveBitmap(Bitmap bitmap, String qrCode) {
-        String fileName = "QR_" + qrCode + ".png";
+        // Nama file
+        String fileName = "QR_" + qrCode + ".png"; // Anda bisa mengganti menjadi .jpg jika perlu
 
-        File directory = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "QRCode");
+        // Mendapatkan directory penyimpanan di /Documents/QR_Code/
+        File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "QR_Code");
         if (!directory.exists()) {
-            directory.mkdirs();
+            directory.mkdirs(); // Membuat directory jika belum ada
         }
 
+        // File untuk menyimpan QR code
         File file = new File(directory, fileName);
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            // Compress bitmap menjadi PNG (atau JPG jika diinginkan)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream); // Untuk JPG ganti PNG menjadi JPEG
             outputStream.flush();
 
+            // Tampilkan toast ketika file berhasil disimpan
             Toast.makeText(context, "QR code disimpan di: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
-            return file;
+            return file; // Kembalikan file yang disimpan
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return null; // Jika gagal, kembalikan null
         }
     }
+
 
     private void scanMedia(File file) {
         MediaScannerConnection.scanFile(context, new String[]{file.getAbsolutePath()}, null, (path, uri) -> {

@@ -264,7 +264,7 @@ public class FragmentProfile extends Fragment {
         String url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRRB9jAk5eg0GdeypvNtW2E9gsLaAX5A3ZPP6GNyzX_PPl4ZQ-grTjNFVhYaPCreCzHapALPg8gLQkG/pub?output=xlsx";
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setTitle("File Spreadsheet");
+        request.setTitle("Check-Point Excel");
         request.setDescription("Mengunduh file spreadsheet...");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setDestinationInExternalFilesDir(getContext(), Environment.DIRECTORY_DOWNLOADS, "Check-Point.xlsx");
@@ -272,7 +272,7 @@ public class FragmentProfile extends Fragment {
         DownloadManager downloadManager = (DownloadManager) requireContext().getSystemService(Context.DOWNLOAD_SERVICE);
         if (downloadManager != null) {
             downloadManager.enqueue(request);
-            Toast.makeText(requireContext(), "Berhasil", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Mulai mengunduh...", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(requireContext(), "Gagal mengakses DownloadManager", Toast.LENGTH_SHORT).show();
         }

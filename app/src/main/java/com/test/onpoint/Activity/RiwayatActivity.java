@@ -34,6 +34,7 @@ public class RiwayatActivity extends AppCompatActivity {
     List<RiwayatDataClass> dataList;
     DatabaseReference databaseReferences;
     ValueEventListener eventListeners;
+    String childKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,6 @@ public class RiwayatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        String childKey = tvTitle.getText().toString();
         databaseReferences = FirebaseDatabase.getInstance().getReference("Riwayat").child(childKey);
 
         eventListeners = databaseReferences.addValueEventListener(new ValueEventListener() {
@@ -127,6 +127,8 @@ public class RiwayatActivity extends AppCompatActivity {
             tvLokasi.setText(bundle.getString("Lokasi"));
             tvUser.setText(bundle.getString("User"));
             tvTanggal.setText(hari + "," + waktu);
+
+            childKey = bundle.getString("KodeQR");
 
 
             tvLatitude.setText(String.valueOf(latitude));
