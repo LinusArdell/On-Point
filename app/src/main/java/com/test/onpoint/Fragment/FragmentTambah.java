@@ -183,7 +183,8 @@ public class FragmentTambah extends Fragment {
     private void addCheckPoint(){
         progress_Bar.setVisibility(View.VISIBLE);
 
-        double latitude, longitude;
+        double latitude;
+        double longitude;
 
         String lokasi = etLokasi.getText().toString();
         String qrCode = etQR.getText().toString();

@@ -65,17 +65,10 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
+        proceedToLogin();
+
         if (!checkPermissions()) {
             requestPermissions();
-        } else {
-            FirebaseUser user = auth.getCurrentUser();
-
-            if(user != null){
-                finish();
-                startActivity(new Intent(this, MainActivity.class));
-            }
-
-            setOnClick();
         }
     }
 
@@ -86,6 +79,17 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.loginProgessBar);
         progressBar.setVisibility(View.GONE);
         auth = FirebaseAuth.getInstance();
+    }
+
+    private void proceedToLogin() {
+        FirebaseUser user = auth.getCurrentUser();
+
+        if (user != null) {
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
+        setOnClick();
     }
 
     private void setOnClick(){
@@ -127,7 +131,10 @@ public class LoginActivity extends AppCompatActivity {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermissions() {
@@ -151,30 +158,8 @@ public class LoginActivity extends AppCompatActivity {
                     break;
                 }
             }
-
-            if (allGranted) {
-                FirebaseUser user = auth.getCurrentUser();
-
-                if(user != null){
-                    finish();
-                    startActivity(new Intent(this, MainActivity.class));
-                }
-
-                setOnClick();
-            } else {
-                Toast.makeText(this, "Semua izin diperlukan untuk melanjutkan", Toast.LENGTH_SHORT).show();
-                finish();
-            }
+        } else {
+            Toast.makeText(this, "Aplikasi membutuhkan izin Penyimpanan, Lokasi dan Kamera", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public static boolean isNetworkStatusAvialable (Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-
     }
 }

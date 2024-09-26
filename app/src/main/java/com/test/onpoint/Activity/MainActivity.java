@@ -218,10 +218,10 @@ public class MainActivity extends AppCompatActivity {
                         double lintang = data.getLatitude();
                         double bujur = data.getLatitude();
                         boolean check = true;
-                        String keterangan = "";
 
                         if (users != null) {
                             String userId = users.getUid();
+                            String email = users.getEmail();
                             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId);
 
                             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                                             SimpleDateFormat simpleTime = new SimpleDateFormat("HH.mm.ss", Locale.US);
                                             String currentTime = simpleTime.format(Calendar.getInstance().getTime());
 
-                                            PointDataClass dataClass = new PointDataClass(lokasi, kodeQR, lintang, bujur, finalUser[0], currentDate, currentTime, keterangan, check);
+                                            PointDataClass dataClass = new PointDataClass(lokasi, kodeQR, lintang, bujur, finalUser[0], currentDate, currentTime, email, check);
 
                                             String historyFormat = kodeQR + " " + currentDate;
 

@@ -49,7 +49,12 @@ import com.test.onpoint.R;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
@@ -87,9 +92,39 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         String tanggal = data.getDataDate();
         String waktu = data.getDataTime();
-        String hari = tanggal + " , " + waktu;
+        String hari;
 
-        if (data.isPeriksa() == true){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.US);
+
+        try {
+            Date dataDate = dateFormat.parse(tanggal);
+
+            Calendar today = Calendar.getInstance();
+            today.set(Calendar.HOUR_OF_DAY, 0);
+            today.set(Calendar.MINUTE, 0);
+            today.set(Calendar.SECOND, 0);
+            today.set(Calendar.MILLISECOND, 0);
+
+            Calendar yesterday = Calendar.getInstance();
+            yesterday.add(Calendar.DAY_OF_YEAR, -1);
+            yesterday.set(Calendar.HOUR_OF_DAY, 0);
+            yesterday.set(Calendar.MINUTE, 0);
+            yesterday.set(Calendar.SECOND, 0);
+            yesterday.set(Calendar.MILLISECOND, 0);
+
+            if (dataDate.equals(today.getTime())) {
+                hari = "Hari ini, " + waktu;
+            } else if (dataDate.equals(yesterday.getTime())) {
+                hari = "Kemarin, " + waktu;
+            } else {
+                hari = tanggal + " , " + waktu;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            hari = tanggal + " , " + waktu;
+        }
+
+        if (data.isPeriksa()) {
             holder.vhStatus.setText("Checked");
         } else {
             holder.vhStatus.setText("Not Checked");
@@ -102,7 +137,6 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
         holder.dtKodeQR.setText(data.getQrCode());
         holder.dtLokasi.setText(data.getLokasi());
         holder.dtUser.setText(data.getUserName());
-
         holder.vhLatitude.setText(String.valueOf(data.getLatitude()));
         holder.vhLongitude.setText(String.valueOf(data.getLongitude()));
 
