@@ -16,6 +16,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -40,6 +41,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.test.onpoint.Activity.EditProfileActivity;
 import com.test.onpoint.Activity.LoginActivity;
 import com.test.onpoint.Activity.RegisterActivity;
 import com.test.onpoint.Class.UserClass;
@@ -51,8 +53,9 @@ public class FragmentProfile extends Fragment {
     TextView textViewUsername, textViewEmail, textViewRole;
     private DatabaseReference databaseReference, userDatabase;
     private FirebaseAuth userAuth;
-    LinearLayout llResetPassword, llLogout, llRegister, llDownloadExcel;
+    CardView llResetPassword, llLogout, llRegister, llDownloadExcel, llEditProfile;
     private static final int PERMISSION_STORAGE_CODE = 1000;
+    String userProfile = "";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
@@ -82,6 +85,7 @@ public class FragmentProfile extends Fragment {
         llRegister = view.findViewById(R.id.containerRegister);
         llLogout = view.findViewById(R.id.containerLogout);
         llDownloadExcel = view.findViewById(R.id.containerDownloadExcel);
+        llEditProfile = view.findViewById(R.id.containerEditProfile);
     }
 
     private void setActionListener(){
@@ -111,6 +115,18 @@ public class FragmentProfile extends Fragment {
             @Override
             public void onClick(View view) {
                 setDownloadExcel();
+            }
+        });
+
+        llEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent i = new Intent(getContext(), EditProfileActivity.class)
+                        .putExtra("Username", textViewUsername.getText().toString())
+                        .putExtra("Image", userProfile);
+                i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(i);
             }
         });
     }
@@ -147,7 +163,7 @@ public class FragmentProfile extends Fragment {
         startActivity(intent);
     }
 
-    private void getCurrentUser() {
+    public void getCurrentUser() {
         if (isNetworkAvailable()) {
             FirebaseUser currentUser = userAuth.getCurrentUser();
             if (currentUser != null) {
@@ -164,7 +180,7 @@ public class FragmentProfile extends Fragment {
                             UserClass userData = snapshot.getValue(UserClass.class);
 
                             String username = userData.getUsername();
-                            String userProfile = userData.getUserPicture();
+                            userProfile = userData.getUserPicture();
                             String userRole = userData.getRole();
 
                             textViewUsername.setText(username);
