@@ -201,6 +201,21 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.appcompat.widget.SearchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/search"
+                app:iconifiedByDefault="false"
+                app:searchHintIcon="@null"
+                app:queryHint="Coba : Hari ini"
+                android:focusable="false"
+                app:closeIcon="@drawable/clear"
+                app:searchIcon="@drawable/baseline_search_24"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@id/expandableCard"/>
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.test.onpoint.Activity.RiwayatActivity;
 import com.test.onpoint.Class.PointDataClass;
 import com.test.onpoint.Class.RiwayatDataClass;
 import com.test.onpoint.R;
@@ -28,6 +29,11 @@ public class RiwayatAdapter extends RecyclerView.Adapter<RiwayatHolder>{
     public RiwayatAdapter(@NonNull Context context, List<RiwayatDataClass> dataList){
         this.context = context;
         this.dataList = dataList;
+    }
+
+    public void updateData(List<RiwayatDataClass> newData) {
+        this.dataList = newData;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -46,9 +52,9 @@ public class RiwayatAdapter extends RecyclerView.Adapter<RiwayatHolder>{
         String hari = tanggal + " , " + waktu;
 
         if (data.isPeriksa() == true){
-            holder.vhStatus.setText("Checked");
+            holder.vhStatus.setText("Aman");
         } else {
-            holder.vhStatus.setText("Not Checked");
+            holder.vhStatus.setText("Belum diperiksa");
             holder.vhStatus.setTextColor(ContextCompat.getColor(context, R.color.red));
         }
 

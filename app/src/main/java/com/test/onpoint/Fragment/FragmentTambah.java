@@ -161,13 +161,6 @@ public class FragmentTambah extends Fragment {
             }
         });
 
-        btnGenerate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                generateQRCode();
-            }
-        });
-
         btnTambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,8 +170,6 @@ public class FragmentTambah extends Fragment {
     }
 
     private void getLocation(){}
-
-    private void generateQRCode(){}
 
     private void addCheckPoint(){
         progress_Bar.setVisibility(View.VISIBLE);
@@ -232,9 +223,12 @@ public class FragmentTambah extends Fragment {
                             SimpleDateFormat simpleTime = new SimpleDateFormat("HH.mm.ss", Locale.US);
                             String currentTime = simpleTime.format(Calendar.getInstance().getTime());
 
+                            SimpleDateFormat simpleHour = new SimpleDateFormat("HH", Locale.US);
+                            String currentHour = simpleHour.format(Calendar.getInstance().getTime());
+
                             PointDataClass dataClass = new PointDataClass(lokasi, qrCode, latitude, longitude, finalUser[0], currentDate, currentTime, keterangan, periksa);
 
-                            String historyFormat = qrCode + " " + currentDate;
+                            String historyFormat = qrCode + " " + currentDate + " " + currentHour;
 
                             FirebaseDatabase.getInstance().getReference("Check Point").child(qrCode).setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

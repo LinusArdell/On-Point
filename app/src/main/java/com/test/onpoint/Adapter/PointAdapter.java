@@ -125,9 +125,9 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
         }
 
         if (data.isPeriksa()) {
-            holder.vhStatus.setText("Checked");
+            holder.vhStatus.setText("Aman");
         } else {
-            holder.vhStatus.setText("Not Checked");
+            holder.vhStatus.setText("Belum di periksa");
             holder.vhStatus.setTextColor(ContextCompat.getColor(context, R.color.red));
         }
 

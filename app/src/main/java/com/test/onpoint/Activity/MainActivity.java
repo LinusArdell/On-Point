@@ -238,9 +238,12 @@ public class MainActivity extends AppCompatActivity {
                                             SimpleDateFormat simpleTime = new SimpleDateFormat("HH.mm.ss", Locale.US);
                                             String currentTime = simpleTime.format(Calendar.getInstance().getTime());
 
+                                            SimpleDateFormat simpleHour = new SimpleDateFormat("HH", Locale.US);
+                                            String currentHour = simpleHour.format(Calendar.getInstance().getTime());
+
                                             PointDataClass dataClass = new PointDataClass(lokasi, kodeQR, lintang, bujur, finalUser[0], currentDate, currentTime, email, check);
 
-                                            String historyFormat = kodeQR + " " + currentDate;
+                                            String historyFormat = kodeQR + " " + currentDate + " " + currentHour;
 
                                             FirebaseDatabase.getInstance().getReference("Check Point").child(kodeQR).setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override

@@ -3,6 +3,7 @@ package com.test.onpoint.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,11 +20,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.test.onpoint.Adapter.RiwayatAdapter;
+import com.test.onpoint.Class.PointDataClass;
 import com.test.onpoint.Class.RiwayatDataClass;
 import com.test.onpoint.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class RiwayatActivity extends AppCompatActivity {
 
@@ -35,6 +40,7 @@ public class RiwayatActivity extends AppCompatActivity {
     DatabaseReference databaseReferences;
     ValueEventListener eventListeners;
     String childKey;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +84,27 @@ public class RiwayatActivity extends AppCompatActivity {
             }
         });
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    searchList(newText);
+                }
+                return false;
+            }
+        });
+
     }
 
     public void initializeUiComponents(){
+        searchView = findViewById(R.id.search);
         tvTitle = findViewById(R.id.tv_title);
         btnKembali = findViewById(R.id.btn_back);
         tvKodeQR = findViewById(R.id.tvQR);
@@ -135,4 +159,28 @@ public class RiwayatActivity extends AppCompatActivity {
             tvLongitude.setText(String.valueOf(longitude));
         }
     }
+
+    public void searchList(String text) {
+        ArrayList<RiwayatDataClass> searchList = new ArrayList<>();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.US);
+        String currentDate = dateFormat.format(new Date());
+
+        for (RiwayatDataClass dataClass : dataList) {
+            if (text.equalsIgnoreCase("hari ini")) {
+                if (dataClass.getDataDate().equals(currentDate)) {
+                    searchList.add(dataClass);
+                }
+            }
+            else if (dataClass.getLokasi().toLowerCase().contains(text.toLowerCase())
+                    || dataClass.getQrCode().toLowerCase().contains(text.toLowerCase())
+                    || dataClass.getUserName().toLowerCase().contains(text.toLowerCase())
+                    || dataClass.getDataDate().toLowerCase().contains(text.toLowerCase())) {
+                searchList.add(dataClass);
+            }
+        }
+
+        adapter.updateData(searchList);
+    }
+
 }

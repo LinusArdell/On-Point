@@ -128,9 +128,12 @@ public class EditActivity extends AppCompatActivity {
                             SimpleDateFormat simpleTime = new SimpleDateFormat("HH.mm.ss", Locale.US);
                             String currentTime = simpleTime.format(Calendar.getInstance().getTime());
 
+                            SimpleDateFormat simpleHour = new SimpleDateFormat("HH", Locale.US);
+                            String currentHour = simpleHour.format(Calendar.getInstance().getTime());
+
                             PointDataClass dataClass = new PointDataClass(lokasi, qrCode, latitude, longitude, finalUser[0], currentDate, currentTime, keterangan, status);
 
-                            String historyFormat = qrCode + " " + currentDate;
+                            String historyFormat = qrCode + " " + currentDate + " " + currentHour;
 
                             FirebaseDatabase.getInstance().getReference("Check Point").child(qrCode).setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
