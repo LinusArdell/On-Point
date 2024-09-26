@@ -94,8 +94,7 @@
                        app:counterEnabled="false"
                        app:boxStrokeColor="@color/strokeColor"
                        android:layout_marginTop="0dp"
-                       android:layout_toStartOf="@id/btnLokasi"
-                       app:helperText="*Required">
+                       android:layout_toStartOf="@id/btnLokasi">
 
                        <com.google.android.material.textfield.TextInputEditText
                            android:id="@+id/etLatitude"
@@ -117,8 +116,7 @@
                        app:boxStrokeColor="@color/strokeColor"
                        android:layout_marginTop="5dp"
                        android:layout_toStartOf="@id/btnLokasi"
-                       android:layout_below="@id/layoutLatitude"
-                       app:helperText="*Required">
+                       android:layout_below="@id/layoutLatitude">
 
                        <com.google.android.material.textfield.TextInputEditText
                            android:id="@+id/etLongitude"

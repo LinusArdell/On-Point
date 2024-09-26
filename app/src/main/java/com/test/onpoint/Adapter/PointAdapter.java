@@ -1,6 +1,7 @@
 package com.test.onpoint.Adapter;
 
 import android.animation.Animator;
+import android.Manifest;
 import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,14 +11,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.MediaScannerConnection;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,12 +24,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,8 +36,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -58,6 +53,7 @@ import java.util.List;
 
 public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Context context;
     private List<PointDataClass> dataList;
     FirebaseAuth userAuth;
@@ -100,7 +96,6 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
             holder.vhStatus.setTextColor(ContextCompat.getColor(context, R.color.red));
         }
 
-        holder.vhQR.setText(data.getQrCode());
         holder.vhLokasi.setText(data.getLokasi());
         holder.vhUsername.setText(data.getUserName());
         holder.vhTanggal.setText(hari);
@@ -229,6 +224,21 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
             dialog.show();
             return true;
         });
+
+        holder.vhMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Double latitude = data.getLatitude();
+                Double longitude = data.getLongitude();
+
+                Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + latitude + "," + longitude);
+
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+
+                view.getContext().startActivity(mapIntent);
+            }
+        });
     }
 
     private void downloadQRCode(String qrCode) {
@@ -286,28 +296,23 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     private File saveBitmap(Bitmap bitmap, String qrCode) {
-        // Nama file
-        String fileName = "QR_" + qrCode + ".png"; // Anda bisa mengganti menjadi .jpg jika perlu
+        String fileName = "QR_" + qrCode + ".png";
 
-        // Mendapatkan directory penyimpanan di /Documents/QR_Code/
         File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "QR_Code");
         if (!directory.exists()) {
-            directory.mkdirs(); // Membuat directory jika belum ada
+            directory.mkdirs();
         }
 
-        // File untuk menyimpan QR code
         File file = new File(directory, fileName);
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            // Compress bitmap menjadi PNG (atau JPG jika diinginkan)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream); // Untuk JPG ganti PNG menjadi JPEG
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             outputStream.flush();
 
-            // Tampilkan toast ketika file berhasil disimpan
             Toast.makeText(context, "QR code disimpan di: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
-            return file; // Kembalikan file yang disimpan
+            return file;
         } catch (IOException e) {
             e.printStackTrace();
-            return null; // Jika gagal, kembalikan null
+            return null;
         }
     }
 
@@ -360,16 +365,15 @@ public class PointAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
 class MyViewHolder extends RecyclerView.ViewHolder {
 
-    TextView vhQR, vhLokasi, vhUsername, vhTanggal, vhLatitude, vhLongitude, vhDetail, vhTextview, vhStatus, dtKodeQR, dtLokasi, dtUser;
+    TextView vhLokasi, vhUsername, vhTanggal, vhLatitude, vhLongitude, vhDetail, vhTextview, vhStatus, dtKodeQR, dtLokasi, dtUser;
     ConstraintLayout vhExpandableCard;
-
+    LinearLayout vhMap;
     RelativeLayout vhRelativeEdit, vhRelativeHistory;
     CardView cardView;
 
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        vhQR = itemView.findViewById(R.id.recQr);
         vhLokasi = itemView.findViewById(R.id.tvLokasi);
         vhUsername = itemView.findViewById(R.id.tvUser);
         vhTanggal = itemView.findViewById(R.id.tvTanggal);
@@ -379,7 +383,7 @@ class MyViewHolder extends RecyclerView.ViewHolder {
         cardView = itemView.findViewById(R.id.recycler_card);
         vhExpandableCard = itemView.findViewById(R.id.expandableCard);
         vhDetail = itemView.findViewById(R.id.recDetail);
-
+        vhMap = itemView.findViewById(R.id.linearLayoutMap);
         vhRelativeEdit = itemView.findViewById(R.id.relativeLayout);
         vhRelativeHistory = itemView.findViewById(R.id.relativeLayout2);
         vhStatus = itemView.findViewById(R.id.tvStatus);

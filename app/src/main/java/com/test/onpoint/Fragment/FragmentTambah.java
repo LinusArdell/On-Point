@@ -183,26 +183,32 @@ public class FragmentTambah extends Fragment {
     private void addCheckPoint(){
         progress_Bar.setVisibility(View.VISIBLE);
 
+        double latitude, longitude;
+
         String lokasi = etLokasi.getText().toString();
         String qrCode = etQR.getText().toString();
-        String latitudeStr = etLatitude.getText().toString();
-        String longitudeStr = etLongitude.getText().toString();
+
+        if (etLatitude.getText().toString().isEmpty()){
+            latitude = -2.9633061649053487;
+        } else {
+            String latitudeStr = etLatitude.getText().toString();
+            latitude = Double.parseDouble(latitudeStr);
+        }
+
+        if (etLongitude.getText().toString().isEmpty()){
+            longitude = 104.7732953101861;
+        } else {
+            String longitudeStr = etLongitude.getText().toString();
+            longitude = Double.parseDouble(longitudeStr);
+        }
 
         String keterangan = "";
         boolean periksa = false;
 
-        if (latitudeStr.isEmpty() || longitudeStr.isEmpty()) {
-            Toast.makeText(getContext(), "Latitude dan Longitude tidak boleh kosong", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!latitudeStr.matches("^-?\\d*(\\.\\d+)?$") || !longitudeStr.matches("^-?\\d*(\\.\\d+)?$")) {
+        if (!etLatitude.getText().toString().matches("^-?\\d*(\\.\\d+)?$") || !etLongitude.getText().toString().matches("^-?\\d*(\\.\\d+)?$")) {
             Toast.makeText(getContext(), "Latitude dan Longitude hanya boleh berisi angka, titik, dan minus", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        double latitude = Double.parseDouble(latitudeStr);
-        double longitude = Double.parseDouble(longitudeStr);
 
         final FirebaseUser users = firebaseAuth.getCurrentUser();
         final String[] finalUser = {""};
